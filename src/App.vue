@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useFortniteMap } from './composables/useFortniteMap';
+import { useMap } from './composables/map';
 import Navbar from './components/Navbar.vue';
 import Sidebar from './components/Sidebar.vue';
-import MapViewer from './components/MapViewer.vue';
-import ThemeModal from './components/ThemeModal.vue';
-import GuideDrawer from './components/GuideDrawer.vue';
+import Map from './components/Map.vue';
+import Themes from './components/Themes.vue';
+import Guide from './components/Guide.vue';
 
 const {
   initMap,
@@ -18,7 +18,7 @@ const {
   resetView,
   isMapLoading,
   flipBusDirection,
-} = useFortniteMap();
+} = useMap();
 const isSaving = ref(false);
 
 const handleSave = async () => {
@@ -48,12 +48,17 @@ const openThemeModal = () => {
       <Navbar @open-theme="openThemeModal" />
 
       <main
-        class="flex-grow flex flex-col-reverse lg:flex-row w-full overflow-hidden bg-base-100"
+        class="flex-grow relative w-full overflow-hidden bg-base-100 flex flex-col-reverse lg:flex-row"
         style="height: calc(100dvh - 4rem)"
       >
-        <Sidebar :results="results" :is-saving="isSaving" @save="handleSave" />
-
-        <MapViewer
+        <Sidebar
+          class="pointer-events-auto isolate"
+          :results="results"
+          :is-saving="isSaving"
+          @save="handleSave"
+        />
+        <Map
+          class="flex-1 min-h-0 min-w-0"
           :is-map-loading="isMapLoading"
           :api-labels="apiLabels"
           @zoom-in="zoomIn"
@@ -65,10 +70,10 @@ const openThemeModal = () => {
       </main>
     </div>
 
-    <GuideDrawer />
+    <Guide />
   </div>
 
-  <ThemeModal id="theme_modal" />
+  <Themes id="theme_modal" />
 </template>
 
 <style>
@@ -78,19 +83,9 @@ const openThemeModal = () => {
   width: 100vw;
 }
 
-.map-container-wrapper {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
 #fortnite-map {
   backface-visibility: hidden;
   transform: translateZ(0);
-}
-
-.pointer-events-auto {
-  isolation: isolate;
 }
 
 .leaflet-container {
@@ -111,7 +106,9 @@ const openThemeModal = () => {
 }
 
 .leaflet-fade-anim .leaflet-tile,
-.leaflet-zoom-anim .leaflet-tile {
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
   will-change: transform;
 }
 
