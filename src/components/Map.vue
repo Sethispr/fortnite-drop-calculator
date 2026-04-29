@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+ * Interactive map viewer component
+ * Zoom controls, loading, and the map container itself.
+ */
 import {
   PhPlus,
   PhMinus,
@@ -9,8 +13,8 @@ import {
 } from '@phosphor-icons/vue';
 
 defineProps<{
-  isMapLoading: boolean;
-  apiLabels: boolean;
+  isLoadingMap: boolean;
+  showLabels: boolean;
 }>();
 
 defineEmits<{
@@ -29,12 +33,12 @@ defineEmits<{
     <div
       id="fortnite-map"
       class="absolute inset-0 outline-none w-full h-full transition-opacity duration-300"
-      :style="{ opacity: isMapLoading ? 0.3 : 1 }"
+      :style="{ opacity: isLoadingMap ? 0.3 : 1 }"
     ></div>
 
     <Transition name="fade">
       <div
-        v-if="isMapLoading"
+        v-if="isLoadingMap"
         class="absolute inset-0 z-[500] flex items-center justify-center bg-transparent backdrop-blur-[2px]"
       >
         <div
@@ -109,19 +113,19 @@ defineEmits<{
             <button
               class="btn btn-square btn-md h-12 w-12 shadow-2xl transition-all border border-base-content/10 backdrop-blur-xl rounded-2xl"
               :class="[
-                apiLabels
+                showLabels
                   ? 'btn-primary text-primary-content border-none shadow-primary/20'
                   : 'bg-base-100/95 text-base-content hover:bg-primary/10 active:bg-primary/20 border-base-content/10',
-                isMapLoading ? 'loading' : '',
+                isLoadingMap ? 'loading' : '',
               ]"
-              :disabled="isMapLoading"
+              :disabled="isLoadingMap"
               aria-label="Toggle map names"
               @click="$emit('toggleLabels')"
             >
               <PhMapTrifold
-                v-if="!isMapLoading"
+                v-if="!isLoadingMap"
                 class="w-5 h-5"
-                :weight="apiLabels ? 'fill' : 'bold'"
+                :weight="showLabels ? 'fill' : 'bold'"
               />
             </button>
           </div>
@@ -130,7 +134,7 @@ defineEmits<{
             <label
               for="help-drawer"
               class="btn btn-ghost btn-square btn-md h-12 w-12 shadow-2xl bg-base-100/95 hover:bg-primary/10 active:bg-primary/20 transition-all border border-base-content/10 backdrop-blur-xl cursor-pointer flex items-center justify-center rounded-2xl"
-              aria-label="Open instructions"
+              aria-label="Open instructions drawer"
             >
               <PhQuestion class="w-5 h-5" weight="bold" />
             </label>
