@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+ * Main application view.
+ * Connects the interactive map to the side panel and navigation bar.
+ */
 import { ref, onMounted } from 'vue';
 import { useMap } from './composables/map';
 import Navbar from './components/Navbar.vue';
@@ -10,13 +14,13 @@ import Guide from './components/Guide.vue';
 const {
   initMap,
   toggleLabels,
-  apiLabels,
+  showLabels,
   results,
   saveCurrentTarget,
   zoomIn,
   zoomOut,
   resetView,
-  isMapLoading,
+  isLoadingMap,
   flipBusDirection,
 } = useMap();
 const isSaving = ref(false);
@@ -59,8 +63,8 @@ const openThemeModal = () => {
         />
         <Map
           class="flex-1 min-h-0 min-w-0"
-          :is-map-loading="isMapLoading"
-          :api-labels="apiLabels"
+          :is-loading-map="isLoadingMap"
+          :show-labels="showLabels"
           @zoom-in="zoomIn"
           @zoom-out="zoomOut"
           @reset-view="resetView"
