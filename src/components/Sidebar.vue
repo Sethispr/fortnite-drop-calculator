@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+ * Info help panel for the drop physics.
+ * Shows the exact timing estimates for the current pathing.
+ */
 import { ref } from 'vue';
 import {
   PhTimer as PhTimerIcon,
@@ -269,7 +273,7 @@ const isOpen = ref(true);
           class="mt-4 p-3 bg-base-200/30 rounded-xl text-xs text-base-content/60 border border-base-content/5"
         >
           <strong>Disclaimer:</strong> This tool uses a 2D map. It does not account for the
-          elevation of your landing spot.
+          elevation of your drop spot.
         </div>
       </div>
     </div>
